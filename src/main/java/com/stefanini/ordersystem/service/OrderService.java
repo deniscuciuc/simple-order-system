@@ -8,4 +8,6 @@ public interface OrderService {
     Order createOrder(String orderType);
 
     List<Order> getAllOrders();
+
+    Order changeOrderStatus(Long id, String status);
 }

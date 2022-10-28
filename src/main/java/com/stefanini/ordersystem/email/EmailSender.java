@@ -1,6 +1,8 @@
 package com.stefanini.ordersystem.email;
 
 import com.stefanini.ordersystem.util.PropertiesReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -13,6 +15,7 @@ import static javax.mail.Message.RecipientType.TO;
 public class EmailSender {
 
 
+    private static final Logger logger = LoggerFactory.getLogger(EmailSender.class);
     private static final PropertiesReader propertiesReader = new PropertiesReader("email.properties");
 
     public static void sendMail(String text, String subject) {
@@ -25,6 +28,7 @@ public class EmailSender {
             message.setText(text);
             Transport.send(message, propertiesReader.readProperty("mail.smtp.user"),
                     propertiesReader.readProperty("mail.smtp.password"));
+            logger.info("Email sent");
         } catch (MessagingException exception) {
             exception.printStackTrace();
         }

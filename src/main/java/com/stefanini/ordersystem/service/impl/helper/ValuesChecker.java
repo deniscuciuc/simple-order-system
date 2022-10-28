@@ -1,5 +1,6 @@
 package com.stefanini.ordersystem.service.impl.helper;
 
+import com.stefanini.ordersystem.domain.enums.OrderStatus;
 import com.stefanini.ordersystem.domain.enums.OrderType;
 import com.stefanini.ordersystem.service.impl.exceptions.InvalidIdException;
 import com.stefanini.ordersystem.service.impl.exceptions.NotFoundException;
@@ -22,6 +23,18 @@ public class ValuesChecker {
         if (foundOrderType == null) {
             logger.error("Order type {} not found", orderType);
             throw new NotFoundException("Order type '" + orderType + "' not found");
+        }
+    }
+
+    public static void verifyIfOrderStatusExists(String status) throws NotFoundException {
+        OrderStatus foundOrderStatus = Arrays.stream(OrderStatus.values())
+                .filter(orderStatusEnum -> status.toUpperCase().equals(orderStatusEnum.toString()))
+                .findAny()
+                .orElse(null);
+
+        if (foundOrderStatus == null) {
+            logger.error("Order type {} not found", status);
+            throw new NotFoundException("Order type '" + status + "' not found");
         }
     }
 

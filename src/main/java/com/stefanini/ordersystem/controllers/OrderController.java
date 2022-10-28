@@ -4,6 +4,7 @@ package com.stefanini.ordersystem.controllers;
 import com.stefanini.ordersystem.domain.Order;
 import com.stefanini.ordersystem.service.OrderService;
 import com.stefanini.ordersystem.service.impl.OrderServiceImpl;
+import com.stefanini.ordersystem.service.impl.exceptions.InvalidStatusLogicException;
 import com.stefanini.ordersystem.service.impl.exceptions.NotFoundException;
 import com.stefanini.ordersystem.service.impl.exceptions.InvalidIdException;
 import org.springframework.http.ResponseEntity;
@@ -42,12 +43,12 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    @PutMapping("/{id}/{status}")
-    public ResponseEntity<?> changeOrderStatus(@PathVariable Long id, @PathVariable String status) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
         try {
             return ResponseEntity
                     .status(OK)
-                    .body(orderService.changeOrderStatus(id, status));
+                    .body("Order with id " + orderService.deleteOrder(id) + " deleted");
         } catch (InvalidIdException exception) {
             return ResponseEntity
                     .status(exception.getResponseStatus())
@@ -57,7 +58,49 @@ public class OrderController {
                     .status(exception.getResponseStatus())
                     .body(exception.getMessage());
         }
+    }
 
+    @PutMapping("/start-order/{id}")
+    public ResponseEntity<?> startOrder(@PathVariable Long id) {
+        try {
+            return ResponseEntity
+                    .status(OK)
+                    .body(orderService.startOrder(id));
+        } catch (InvalidIdException exception) {
+            return ResponseEntity
+                    .status(exception.getResponseStatus())
+                    .body(exception.getMessage());
+        } catch (NotFoundException exception) {
+            return ResponseEntity
+                    .status(exception.getResponseStatus())
+                    .body(exception.getMessage());
+        } catch (InvalidStatusLogicException exception) {
+            return ResponseEntity
+                    .status(exception.getResponseStatus())
+                    .body(exception.getMessage());
+        }
+
+    }
+
+    @PutMapping("/finish-order/{id}")
+    public ResponseEntity<?> finishOrder(@PathVariable Long id) {
+        try {
+            return ResponseEntity
+                    .status(OK)
+                    .body(orderService.finishOrder(id));
+        } catch (InvalidIdException exception) {
+            return ResponseEntity
+                    .status(exception.getResponseStatus())
+                    .body(exception.getMessage());
+        } catch (NotFoundException exception) {
+            return ResponseEntity
+                    .status(exception.getResponseStatus())
+                    .body(exception.getMessage());
+        } catch (InvalidStatusLogicException exception) {
+            return ResponseEntity
+                    .status(exception.getResponseStatus())
+                    .body(exception.getMessage());
+        }
     }
 
 }

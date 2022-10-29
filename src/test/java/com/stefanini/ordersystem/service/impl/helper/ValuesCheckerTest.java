@@ -1,30 +1,52 @@
 package com.stefanini.ordersystem.service.impl.helper;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.stefanini.ordersystem.service.impl.exceptions.InvalidIdException;
+import com.stefanini.ordersystem.service.impl.exceptions.NotFoundException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ValuesCheckerTest {
 
-    @BeforeEach
-    void setUp() {
-    }
 
-    @AfterEach
-    void tearDown() {
-    }
 
+    /**
+     * Unit test for {@link ValuesChecker#verifyIfOrderTypeExists(String) verifyIfOrderTypeExists} method
+     */
     @Test
-    void verifyIfOrderTypeExists() {
+    void shouldThrowNotFoundExceptionIfOrderTypeNotFound() {
+        String fakeOrderType = "dog";
+
+        assertThrows(NotFoundException.class, () -> ValuesChecker.verifyIfOrderTypeExists(fakeOrderType));
     }
 
+    /**
+     * Unit test for {@link ValuesChecker#verifyIfOrderStatusExists(String) verifyIfOrderStatusExists} method
+     */
     @Test
-    void verifyIfOrderStatusExists() {
+    void shouldThrowNotFoundExceptionIfOrderStatusNotFound() {
+        String fakeOrderStatus = "beautiful";
+
+        assertThrows(NotFoundException.class, () -> ValuesChecker.verifyIfOrderStatusExists(fakeOrderStatus));
     }
 
+    /**
+     * Unit test for {@link ValuesChecker#verifyIfIdIsValid(Long) verifyIfIdIsValid} method
+     */
     @Test
-    void verifyIfIdIsValid() {
+    void shouldThrowInvalidIdExceptionIfIdIsNegative() {
+        Long negativeId = (long) -25;
+
+        assertThrows(InvalidIdException.class, () -> ValuesChecker.verifyIfIdIsValid(negativeId));
+    }
+
+    /**
+     * Unit test for {@link ValuesChecker#verifyIfIdIsValid(Long) verifyIfIdIsValid} method
+     */
+    @Test
+    void shouldThrowInvalidIdExceptionIfIdIsZero() {
+        Long zeroId = (long) 0;
+
+        assertThrows(InvalidIdException.class, () -> ValuesChecker.verifyIfIdIsValid(zeroId));
     }
 }

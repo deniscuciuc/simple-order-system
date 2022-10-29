@@ -1,6 +1,7 @@
 package com.stefanini.ordersystem.service.impl;
 
 import com.stefanini.ordersystem.dao.OrderDao;
+import com.stefanini.ordersystem.dao.impl.OrderDaoImpl;
 import com.stefanini.ordersystem.domain.Order;
 import com.stefanini.ordersystem.domain.enums.OrderStatus;
 import com.stefanini.ordersystem.domain.enums.OrderType;
@@ -26,8 +27,8 @@ public class OrderServiceImpl implements OrderService {
     private final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
     private final OrderDao orderDao;
 
-    public OrderServiceImpl(OrderDao orderDao) {
-        this.orderDao = orderDao;
+    public OrderServiceImpl(OrderDaoImpl orderDaoImpl) {
+        this.orderDao = orderDaoImpl;
     }
 
     @Override
@@ -37,15 +38,12 @@ public class OrderServiceImpl implements OrderService {
         OrderType convertedOrderType = OrderType.valueOf(orderType.toUpperCase());
         Order order = Order.createWithCreatedTimeAndEntryStatus(convertedOrderType);
 
-        order = orderDao.createOrder(order);
-
-
         EmailSender.sendMail(
                 "Here is information about new order.\n" + order.toString(),
                 "New order was created"
         );
 
-        return order;
+        return orderDao.createOrder(order);
     }
 
     @Override

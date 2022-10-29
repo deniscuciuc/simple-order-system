@@ -7,6 +7,7 @@ import com.stefanini.ordersystem.service.impl.OrderServiceImpl;
 import com.stefanini.ordersystem.service.impl.exceptions.InvalidStatusLogicException;
 import com.stefanini.ordersystem.service.impl.exceptions.NotFoundException;
 import com.stefanini.ordersystem.service.impl.exceptions.InvalidIdException;
+import com.stefanini.ordersystem.service.impl.helper.ValuesChecker;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

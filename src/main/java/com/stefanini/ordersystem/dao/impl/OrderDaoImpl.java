@@ -7,6 +7,7 @@ import com.stefanini.ordersystem.domain.enums.OrderType;
 import com.stefanini.ordersystem.jdbc.JdbcFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;

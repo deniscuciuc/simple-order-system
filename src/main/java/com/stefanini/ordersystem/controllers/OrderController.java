@@ -4,10 +4,9 @@ package com.stefanini.ordersystem.controllers;
 import com.stefanini.ordersystem.domain.Order;
 import com.stefanini.ordersystem.service.OrderService;
 import com.stefanini.ordersystem.service.impl.OrderServiceImpl;
+import com.stefanini.ordersystem.service.impl.exceptions.InvalidIdException;
 import com.stefanini.ordersystem.service.impl.exceptions.InvalidStatusLogicException;
 import com.stefanini.ordersystem.service.impl.exceptions.NotFoundException;
-import com.stefanini.ordersystem.service.impl.exceptions.InvalidIdException;
-import com.stefanini.ordersystem.service.impl.helper.ValuesChecker;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +15,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-@RequestMapping(("/api/order"))
+@RequestMapping(("/api/orders"))
 @RestController
 public class OrderController {
 

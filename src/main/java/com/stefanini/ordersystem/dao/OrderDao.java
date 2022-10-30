@@ -2,7 +2,6 @@ package com.stefanini.ordersystem.dao;
 
 import com.stefanini.ordersystem.domain.Order;
 
-import java.sql.Date;
 import java.util.List;
 
 public interface OrderDao {

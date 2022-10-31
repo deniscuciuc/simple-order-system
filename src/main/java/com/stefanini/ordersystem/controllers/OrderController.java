@@ -79,7 +79,6 @@ public class OrderController {
                     .status(exception.getResponseStatus())
                     .body(exception.getMessage());
         }
-
     }
 
     @PutMapping("/finish-order/{id}")

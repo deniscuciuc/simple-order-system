@@ -4,10 +4,10 @@ import com.stefanini.ordersystem.dao.OrderDao;
 import com.stefanini.ordersystem.domain.Order;
 import com.stefanini.ordersystem.domain.enums.OrderStatus;
 import com.stefanini.ordersystem.domain.enums.OrderType;
-import com.stefanini.ordersystem.jdbc.JdbcFactory;
+import com.stefanini.ordersystem.jdbc.JdbcConnection;
+import com.stefanini.ordersystem.jdbc.JdbcConnectionImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -20,6 +20,8 @@ import static com.stefanini.ordersystem.domain.enums.OrderStatus.IN_PROGRESS;
 @Repository
 public class OrderDaoImpl implements OrderDao {
 
+    private JdbcConnection jdbcConnection;
+
     private final Logger logger = LoggerFactory.getLogger(OrderDaoImpl.class);
     private final String ORDER_TABLE_NAME = "Orders";
     private final String ID_ROW_NAME = "id";
@@ -28,6 +30,10 @@ public class OrderDaoImpl implements OrderDao {
     private final String CREATED_AT_ROW_NAME = "created_at";
     private final String IN_PROGRESS_FROM_ROW_NAME = "in_progress_from";
     private final String FINISHED_AT_ROW_NAME = "finished_at";
+
+    public OrderDaoImpl(JdbcConnectionImpl jdbcConnectionImpl) {
+        this.jdbcConnection = jdbcConnectionImpl;
+    }
 
     @Override
     public Order createOrder(Order order) {
@@ -39,7 +45,7 @@ public class OrderDaoImpl implements OrderDao {
         String getLastAddedOrderQuery = String.format("SELECT * FROM %s WHERE %s = (SELECT LAST_INSERT_ID())",
                 ORDER_TABLE_NAME, ID_ROW_NAME);
 
-        try (Connection connection = JdbcFactory.getInstance().getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              Statement statement = connection.createStatement()) {
 
             statement.executeUpdate(insertQuery);
@@ -57,7 +63,7 @@ public class OrderDaoImpl implements OrderDao {
     public List<Order> findAllOrders() {
         String query = "SELECT * FROM " + ORDER_TABLE_NAME;
 
-        try (Connection connection = JdbcFactory.getInstance().getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
              ResultSet resultSet = statement.executeQuery()) {
 
@@ -87,7 +93,7 @@ public class OrderDaoImpl implements OrderDao {
     public Long deleteOrderById(Long id) {
         String query = String.format("DELETE FROM %s WHERE %s = %d", ORDER_TABLE_NAME, ID_ROW_NAME, id);
 
-        try (Connection connection = JdbcFactory.getInstance().getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.execute();
 
@@ -103,7 +109,7 @@ public class OrderDaoImpl implements OrderDao {
     public Order findOrderById(Long id) {
         String query = String.format("SELECT * FROM %s WHERE %s = %d", ORDER_TABLE_NAME, ID_ROW_NAME, id);
 
-        try (Connection connection = JdbcFactory.getInstance().getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
             return getSingleOrderResultFromResultSetOrReturnNull(resultSet);
@@ -125,7 +131,7 @@ public class OrderDaoImpl implements OrderDao {
                         "WHERE %s = %d", ORDER_TABLE_NAME, STATUS_ROW_NAME, order.getStatus(), IN_PROGRESS_FROM_ROW_NAME,
                 inProgressFrom, FINISHED_AT_ROW_NAME, finishedAt, ID_ROW_NAME, order.getId());
 
-        try (Connection connection = JdbcFactory.getInstance().getConnection();
+        try (Connection connection = jdbcConnection.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.executeUpdate();

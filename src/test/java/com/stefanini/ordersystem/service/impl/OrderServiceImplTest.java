@@ -2,7 +2,6 @@ package com.stefanini.ordersystem.service.impl;
 
 import com.stefanini.ordersystem.dao.impl.OrderDaoImpl;
 import com.stefanini.ordersystem.domain.Order;
-import com.stefanini.ordersystem.domain.enums.OrderType;
 import com.stefanini.ordersystem.service.OrderService;
 import com.stefanini.ordersystem.service.impl.exceptions.InvalidStatusLogicException;
 import com.stefanini.ordersystem.service.impl.exceptions.NotFoundException;
@@ -16,9 +15,9 @@ import org.mockito.MockitoAnnotations;
 import static com.stefanini.ordersystem.domain.enums.OrderStatus.*;
 import static com.stefanini.ordersystem.domain.enums.OrderType.REPAIR;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OrderServiceImplTest {
 

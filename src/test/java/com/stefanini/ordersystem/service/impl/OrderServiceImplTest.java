@@ -15,6 +15,7 @@ import org.mockito.MockitoAnnotations;
 import static com.stefanini.ordersystem.domain.enums.OrderStatus.*;
 import static com.stefanini.ordersystem.domain.enums.OrderType.REPAIR;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -65,6 +66,20 @@ class OrderServiceImplTest {
     void shouldReturnAllOrders() {
         underTest.getAllOrders();
         verify(orderDao).findAllOrders();
+    }
+
+    /**
+     * Unit test for {@link OrderService#getOrderById(Long) getOrderById} method
+     */
+    @Test
+    void shouldReturnOrderByIdIfExists() {
+        Order order = Order.createWithCreatedTimeAndEntryStatus(REPAIR);
+        order.setId((long) 1);
+
+        given(orderDao.findOrderById(order.getId())).willReturn(order);
+
+        Order foundOrder = underTest.getOrderById(order.getId());
+        assertEquals(order, foundOrder);
     }
 
     /**

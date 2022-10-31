@@ -52,6 +52,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order getOrderById(Long id) {
+        ValuesChecker.verifyIfIdIsValid(id);
+        return findOrderByIdAndIfNotFoundThrowException(id);
+    }
+
+    @Override
     public Long deleteOrder(Long id) {
         ValuesChecker.verifyIfIdIsValid(id);
         findOrderByIdAndIfNotFoundThrowException(id);

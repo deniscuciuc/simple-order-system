@@ -43,6 +43,23 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrder(@PathVariable Long id) {
+        try {
+            return ResponseEntity
+                    .status(OK)
+                    .body(orderService.getOrderById(id));
+        } catch (InvalidIdException exception) {
+            return ResponseEntity
+                    .status(exception.getResponseStatus())
+                    .body(exception.getMessage());
+        } catch (NotFoundException exception) {
+            return ResponseEntity
+                    .status(exception.getResponseStatus())
+                    .body(exception.getMessage());
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable Long id) {
         try {

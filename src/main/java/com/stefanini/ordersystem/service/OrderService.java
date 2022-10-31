@@ -16,4 +16,6 @@ public interface OrderService {
     Order startOrder(Long id);
 
     Order finishOrder(Long id);
+
+    Order getOrderById(Long id);
 }

@@ -5,7 +5,7 @@ import com.stefanini.ordersystem.domain.Order;
 import com.stefanini.ordersystem.domain.enums.OrderStatus;
 import com.stefanini.ordersystem.domain.enums.OrderType;
 import com.stefanini.ordersystem.jdbc.JdbcConnection;
-import com.stefanini.ordersystem.jdbc.JdbcConnectionImpl;
+import com.stefanini.ordersystem.jdbc.impl.JdbcConnectionImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -20,7 +20,7 @@ import static com.stefanini.ordersystem.domain.enums.OrderStatus.IN_PROGRESS;
 @Repository
 public class OrderDaoImpl implements OrderDao {
 
-    private JdbcConnection jdbcConnection;
+    private final JdbcConnection jdbcConnection;
 
     private final Logger logger = LoggerFactory.getLogger(OrderDaoImpl.class);
     private final String ORDER_TABLE_NAME = "Orders";
